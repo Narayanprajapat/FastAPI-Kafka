@@ -15,6 +15,7 @@ class KakfaConsumerSettings(BaseSettings):
 class KakfaProducerSettings(BaseSettings):
     KAFKA_BROKEN_URL: str
     CLIENT_ID: str = "python-producer"
+    KAFKA_TOPIC: str
 
     class Config:
         case_sesitive = True
@@ -22,5 +23,13 @@ class KakfaProducerSettings(BaseSettings):
         extra = "ignore"
 
 
+class PostgresqlSettings(BaseSettings):
+    HOST: str
+    USERNAME: str
+    PASSWORD: str
+    PORT: str
+
+
+postgresql_settings = PostgresqlSettings()
 kafka_consumer_setting = KakfaConsumerSettings()
 kafka_producer_setting = KakfaProducerSettings()
