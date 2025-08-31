@@ -2,6 +2,7 @@ import asyncio
 from app.api import routers
 from app.utils.logger import logging
 from app.core.messaging.kafka.consumer import consume_messages
+from app.core.db.postgresql import Base, engine
 
 from fastapi import FastAPI, Request
 from contextlib import asynccontextmanager
@@ -15,7 +16,9 @@ logger = logging.getLogger(name="server.py")
 async def lifespan(app: FastAPI):
     logger.info("Starting")
     asyncio.create_task(consume_messages())
-    await consume_messages()
+
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     yield
     logger.info("Stopping")
 
