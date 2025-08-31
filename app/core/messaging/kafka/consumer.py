@@ -4,7 +4,7 @@ from typing import List
 from confluent_kafka import Consumer
 from app.utils.logger import logging
 from app.core.config.enums import EventsName
-from app.core.config.settings import kafka_setting
+from app.core.config.settings import kafka_consumer_setting
 from app.core.messaging.kafka.handler.factory_handler import FactoryHandler
 
 logger = logging.getLogger(name="kafka.consumer")
@@ -14,8 +14,8 @@ class KafkaConsumer:
     def __init__(self, topics: list) -> None:
         self.consumer = Consumer(
             {
-                "bootstrap.servers": kafka_setting.KAFKA_BROKEN_URL,
-                "group.id": kafka_setting.KAFKA_GROUP_ID,
+                "bootstrap.servers": kafka_consumer_setting.KAFKA_BROKEN_URL,
+                "group.id": kafka_consumer_setting.KAFKA_GROUP_ID,
                 "auto.offset.reset": "earliest",
             }
         )
@@ -90,7 +90,7 @@ async def consume_messages():
     loop = asyncio.get_running_loop()
 
     kafka_consumer = loop.run_in_executor(
-        None, lambda: KafkaConsumer(topics=[kafka_setting.KAFKA_TOPIC]).start()
+        None, lambda: KafkaConsumer(topics=[kafka_consumer_setting.KAFKA_TOPIC]).start()
     )
 
     await asyncio.gather(kafka_consumer)
