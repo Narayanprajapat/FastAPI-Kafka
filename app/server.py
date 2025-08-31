@@ -8,16 +8,16 @@ from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
 
-logger = logging.getLogger(name='server.py')
+logger = logging.getLogger(name="server.py")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info('Starting')
+    logger.info("Starting")
     asyncio.create_task(consume_messages())
     await consume_messages()
     yield
-    logger.info('Stopping')
+    logger.info("Stopping")
 
 
 app = FastAPI(lifespan=lifespan)
@@ -34,12 +34,12 @@ async def log_middleware(request: Request, call_next):
 app.add_middleware(
     CORSMiddleware,
     **{
-        "allow_origins":[],          # list of allowed origins
-        "allow_credentials":True,
-        "allow_methods":["*"],            # ["GET", "POST"] if you want to restrict
-        "allow_headers":["*"],            # ["Authorization", "Content-Type"] if restricted)
-    }
+        "allow_origins": [],  # list of allowed origins
+        "allow_credentials": True,
+        "allow_methods": ["*"],  # ["GET", "POST"] if you want to restrict
+        "allow_headers": ["*"],  # ["Authorization", "Content-Type"] if restricted)
+    },
 )
 
 
-app.include_router(router=routers, prefix='/api/v1')
+app.include_router(router=routers, prefix="/api/v1")
