@@ -17,7 +17,8 @@ class KafkaProducer:
             }
         )
 
-    def delivery_report(self, err, msg):
+    @staticmethod
+    def delivery_report(err, msg):
         """Delivery callback for confirming message status."""
         if err is not None:
             logger(f"Delivery failed: {err}")
