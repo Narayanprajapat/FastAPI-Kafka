@@ -1,7 +1,12 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 import asyncio
 from app.api import routers
 from app.utils.logger import logging
-from app.core.messaging.kafka.consumer import consume_messages
+
+# from app.core.messaging.kafka.consumer import consume_messages
 from app.core.db.postgresql import Base, engine
 
 from fastapi import FastAPI, Request
@@ -15,7 +20,7 @@ logger = logging.getLogger(name="server.py")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Starting")
-    asyncio.create_task(consume_messages())
+    # asyncio.create_task(consume_messages())
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
