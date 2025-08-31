@@ -1,26 +1,24 @@
 import json
 from app.utils.logger import logging
 from confluent_kafka import Producer
+from app.core.config.settings import kafka_producer_setting
 
 
 logger = logging.getLogger(name="kafka.producer")
 
 
 class KafkaProducer:
-    def __init__(self, brokers: str, client_id: str = "python-producer"):
-
+    def __init__(self):
         self.producer = Producer(
             {
-                "bootstrap.servers": brokers,
-                "client.id": client_id,
+                "bootstrap.servers": kafka_producer_setting.KAFKA_BROKEN_URL,
+                "client.id": kafka_producer_setting.CLIENT_ID,
                 "acks": "all",  # Strongest delivery guarantee
             }
         )
 
     def delivery_report(self, err, msg):
-        """
-        Delivery callback for confirming message status.
-        """
+        """Delivery callback for confirming message status."""
         if err is not None:
             logger(f"Delivery failed: {err}")
         else:
